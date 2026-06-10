@@ -1,0 +1,113 @@
+/* python.org-inspired theme — SINGLE shared stylesheet for every page
+   (agent chat + retrieval ingest). Mounted at /assets/style.css by both
+   services so there is exactly one source of truth (no per-page copies). */
+:root {
+  --py-blue:        #3776ab;
+  --py-blue-nav:    #2d618c;
+  --py-blue-dark:   #1e2a35;
+  --py-yellow:      #ffc91a;
+  --py-yellow-soft: #ffd43b;
+  --py-gray:        #646565;
+
+  --bg:             #ffffff;
+  --bg-soft:        #ededed;
+  --text:           #333333;
+  --text-muted:     #666666;
+  --border:         #dddddd;
+
+  --header-grad:    linear-gradient(180deg, #3a6ea5 0%, #2d618c 100%);
+
+  --font-body: "Source Sans 3", "Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
+  --font-head: "Source Sans 3", "Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "Ubuntu Mono", "Source Code Pro", Menlo, Consolas, monospace;
+}
+
+* { box-sizing: border-box; }
+/* ~20% larger base type across the app */
+body { margin: 0; font-family: var(--font-body); color: var(--text); background: var(--bg); line-height: 1.55; font-size: 18px; }
+
+/* ── Shared top bar (rendered by header.js, identical on every page) ── */
+.topbar { background: var(--py-blue-dark); border-top: 3px solid var(--py-yellow); color: #fff; display: flex; align-items: center; gap: 24px; padding: 14px 24px; }
+.topbar .brand { font-weight: 700; font-size: 22px; display: flex; align-items: center; gap: 9px; }
+.topbar .brand .suffix { font-weight: 400; opacity: 0.6; }
+.topbar .brand .logo { width: 30px; height: 30px; }
+.topbar nav { display: flex; gap: 4px; }
+.topbar nav a { color: #fff; text-decoration: none; padding: 8px 16px; border-radius: 4px; font-weight: 600; font-size: 17px; border-top: 3px solid transparent; }
+.topbar nav a:hover { background: rgba(255,255,255,0.08); }
+.topbar nav a.active { border-top-color: var(--py-yellow); background: rgba(255,255,255,0.06); }
+
+/* ── Hero band (rendered by header.js, identical on every page) ── */
+.hero { background: var(--header-grad); color: #fff; padding: 26px 24px; }
+.hero h1 { margin: 0 0 4px; font-size: 28px; font-weight: 700; }
+.hero h1 .accent { color: var(--py-yellow); }
+.hero p { margin: 0; opacity: 0.92; font-size: 16px; }
+
+/* ── Layout: chat column + right sidebar ── */
+/* ~40% wider working area */
+.layout { max-width: 1540px; margin: 0 auto; padding: 20px; display: grid; grid-template-columns: 1fr 320px; gap: 24px; }
+@media (max-width: 800px) { .layout { grid-template-columns: 1fr; } }
+
+/* ── Centered container (ingest page) ── */
+.container { max-width: 1400px; margin: 0 auto; padding: 24px; }
+
+/* ── Cards ── */
+.card { background: var(--bg); border: 1px solid var(--border); border-top: 3px solid var(--py-blue); border-radius: 4px; padding: 16px; }
+
+/* ── Buttons ── */
+button { font-family: var(--font-body); cursor: pointer; }
+.btn-primary { background: var(--py-yellow); color: #333; border: none; border-radius: 4px; padding: 10px 16px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; }
+.btn-primary:hover { background: var(--py-yellow-soft); }
+.btn-primary:disabled { opacity: 0.5; cursor: default; }
+.btn-ghost { background: #fff; color: var(--py-blue); border: 1px solid var(--py-blue); border-radius: 4px; padding: 7px 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+.btn-ghost:hover { background: #f0f6fb; }
+
+/* ── Toggle pills ── */
+.toggle { background: #fff; color: var(--py-blue); border: 2px solid var(--py-blue); border-radius: 999px; padding: 6px 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+.toggle.active { background: var(--py-blue); color: #fff; }
+.toggle svg { width: 18px; height: 18px; }
+
+/* ── Chips ── */
+.chip { display: inline-flex; align-items: center; gap: 5px; background: var(--bg-soft); color: var(--text-muted); border-radius: 999px; padding: 3px 10px; font-size: 13px; }
+.chip svg { width: 14px; height: 14px; }
+
+svg.icon { width: 18px; height: 18px; stroke-width: 2; }
+.spin { animation: spin 0.9s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Chat thread ── */
+.thread { display: flex; flex-direction: column; gap: 12px; min-height: 300px; }
+.bubble { border-radius: 8px; padding: 10px 14px; max-width: 88%; white-space: pre-wrap; }
+.bubble.user { align-self: flex-end; background: var(--py-blue); color: #fff; }
+.bubble.assistant { align-self: flex-start; background: var(--bg-soft); color: var(--text); border: 1px solid var(--border); }
+.bubble.clarify { align-self: flex-start; background: #fffbe6; border-left: 4px solid var(--py-yellow); display: flex; gap: 8px; align-items: flex-start; }
+.bubble.clarify svg { width: 18px; height: 18px; flex-shrink: 0; color: var(--py-blue); }
+.bubble .tags { margin-top: 8px; display: flex; gap: 6px; flex-wrap: wrap; }
+
+/* ── Composer ── */
+.composer { display: flex; gap: 10px; align-items: flex-end; margin-top: 14px; }
+.composer textarea { flex: 1; resize: vertical; min-height: 56px; padding: 12px; border: 1px solid var(--border); border-radius: 6px; font-family: var(--font-body); font-size: 18px; }
+.controls { display: flex; gap: 8px; align-items: center; margin-top: 12px; flex-wrap: wrap; }
+
+/* ── Sidebar ── */
+.sidebar h3 { color: var(--py-blue); margin: 0 0 10px; font-size: 18px; }
+.conv-list { display: flex; flex-direction: column; gap: 6px; }
+.conv-item { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border: 1px solid var(--border); border-top: 2px solid var(--py-blue); border-radius: 4px; background: #fff; cursor: pointer; }
+.conv-item:hover { background: #f0f6fb; }
+.conv-item.active { background: #e8f1f9; }
+.conv-item svg { width: 16px; height: 16px; color: var(--py-blue); flex-shrink: 0; }
+.conv-item .title { flex: 1; font-size: 16px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.conv-item .del { color: var(--text-muted); border: none; background: none; padding: 2px; }
+.conv-item .del:hover { color: #b3261e; }
+.conv-item .del svg { width: 15px; height: 15px; }
+
+/* ── Dark navy console panel (ingest status / search test) ── */
+.console { background: var(--py-blue-dark); color: #e6e6e6; font-family: var(--font-mono); font-size: 13px; border-radius: 4px; padding: 12px 14px; white-space: pre-wrap; max-height: 280px; overflow-y: auto; }
+.console .ok { color: var(--py-yellow); }
+.console .err { color: #ff7b72; }
+
+/* ── Error banner ── */
+.banner-error { display: flex; align-items: center; gap: 8px; background: #fdecea; color: #b3261e; border: 1px solid #f3c0bb; border-radius: 4px; padding: 10px 12px; margin: 10px 0; }
+.banner-error svg { width: 18px; height: 18px; }
+
+.loading { display: inline-flex; align-items: center; gap: 8px; color: var(--text-muted); font-size: 14px; }
+.loading svg { width: 18px; height: 18px; }

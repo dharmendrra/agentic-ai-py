@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Your Library Knowledge Base — Agentic AI (Python)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Source+Code+Pro&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/style.css" />
+  <style>
+    /* Modern drag-and-drop upload zone (scoped to this page). */
+    .dropzone {
+      border: 2px dashed var(--py-blue);
+      border-radius: 10px;
+      background: #f5f9fc;
+      padding: 34px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: background .15s, border-color .15s;
+    }
+    .dropzone:hover { background: #eef5fb; }
+    .dropzone.dragover { background: #e3f0fa; border-color: var(--py-blue-nav); }
+    .dropzone .dz-icon { color: var(--py-blue); margin-bottom: 10px; }
+    .dropzone .dz-title { font-weight: 600; color: var(--text); }
+    .dropzone .dz-sub { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+    .dz-file {
+      display: none; margin-top: 14px; align-items: center; gap: 10px;
+      justify-content: center; font-size: 14px; color: var(--text);
+    }
+    .dz-file .pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--bg-soft); border: 1px solid var(--border);
+      border-radius: 999px; padding: 6px 12px;
+    }
+    .field {
+      width: 100%; padding: 9px 11px; border: 1px solid var(--border);
+      border-radius: 6px; font-family: var(--font-body); font-size: 14px; margin-top: 12px;
+    }
+    .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .muted { color: var(--text-muted); font-size: 13px; }
+    .card h3 { margin: 0 0 4px; }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <span class="brand">
+      <svg class="logo" viewBox="0 0 110 110" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path fill="#ffd43b" d="M54 5c-13 0-12 6-12 6v8h24v3H30s-16-2-16 24 14 24 14 24h8v-9s0-14 14-14h24s13 0 13-13V19S88 5 54 5zM40 12a4 4 0 110 8 4 4 0 010-8z"/>
+        <path fill="#3776ab" d="M56 105c13 0 12-6 12-6v-8H44v-3h36s16 2 16-24-14-24-14-24h-8v9s0 14-14 14H36s-13 0-13 13v22s-2 7 36 7zM70 98a4 4 0 110-8 4 4 0 010 8z"/>
+      </svg>
+      Agentic AI <span class="suffix">(Python)</span>
+    </span>
+    <nav>
+      <!-- Chat lives in the agent service (canonical port 8082). -->
+      <a href="http://localhost:8082/">Chat</a>
+      <a href="/" class="active">Ingest</a>
+    </nav>
+  </div>
+
+  <div class="hero">
+    <h1>Your <span class="accent">Library</span> Knowledge Base</h1>
+    <p>+ web search and conversations</p>
+  </div>
+
+  <div class="container">
+    <!-- Upload card -->
+    <div class="card">
+      <h3>Upload a PDF</h3>
+      <p class="muted" style="margin-top:0;">Drag a file in or click to browse. The book title defaults to the filename.</p>
+
+      <div class="dropzone" id="dropzone" role="button" tabindex="0" aria-label="Upload a PDF">
+        <div class="dz-icon">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+        </div>
+        <div class="dz-title">Drag &amp; drop a PDF here</div>
+        <div class="dz-sub">or click to browse</div>
+        <div class="dz-file" id="dzFile">
+          <span class="pill">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v5h5"/></svg>
+            <span id="dzFileName"></span>
+          </span>
+        </div>
+        <input type="file" id="pdf" accept="application/pdf" hidden />
+      </div>
+
+      <input type="text" id="book" class="field" placeholder="Book title (optional — defaults to filename)" />
+
+      <div class="row" style="margin-top:14px;">
+        <button class="btn-primary" id="uploadBtn">
+          <svg class="icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+          Upload &amp; Ingest
+        </button>
+        <span class="muted" id="hint">PDF only · up to ~100 MB</span>
+      </div>
+      <div id="status" class="console" style="margin-top:14px; display:none;"></div>
+    </div>
+
+    <!-- Search test card -->
+    <div class="card" style="margin-top:18px;">
+      <h3>Test search</h3>
+      <p class="muted" style="margin-top:0;">
+        Searches your <strong>indexed books in Pinecone directly</strong> (the raw vector retrieval the chat
+        agent uses) — a quick way to confirm a freshly-ingested PDF is findable, without going through the LLM.
+        Add a book title to narrow to one book.
+      </p>
+      <div class="row">
+        <input type="text" id="q" class="field" style="flex:2; margin-top:0;" placeholder="Search query…" />
+        <input type="text" id="searchBook" class="field" style="flex:1; margin-top:0;" placeholder="Book (optional)" />
+        <button class="btn-primary" id="searchBtn">Search</button>
+      </div>
+      <div id="searchOut" class="console" style="margin-top:14px; display:none;"></div>
+    </div>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
