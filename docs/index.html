@@ -157,57 +157,68 @@
       <svg viewBox="0 0 920 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Agentic AI Python dataflow: browser to agent, agent to tools, tools to backends.">
         <defs>
           <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
-            <path d="M0 0L9 4.5L0 9z" fill="#3776ab"/>
+            <path d="M0 0L9 4.5L0 9z" fill="#60a5fa"/>
+          </marker>
+          <marker id="arrow-y" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+            <path d="M0 0L9 4.5L0 9z" fill="#d9a400"/>
           </marker>
           <style>
-            .lbl { font: 600 13px "Source Sans 3", sans-serif; fill: #1e2a35; }
-            .sub { font: 400 11px "Source Code Pro", monospace; fill: #666; }
-            .edge { stroke: #3776ab; stroke-width: 1.6; fill: none; marker-end: url(#arrow); }
-            .edgey { stroke: #d9a400; }
-            .port { font: 700 10px "Source Code Pro", monospace; fill: #2d618c; }
+            .lbl  { font: 600 13px "Source Sans 3", sans-serif; fill: #1e2a35; }
+            .sub  { font: 400 11px "Source Code Pro", monospace; fill: #64748b; }
+            .edge { stroke: #3b82f6; stroke-width: 1.6; fill: none; marker-end: url(#arrow); }
+            .edgey{ stroke: #d9a400; stroke-width: 1.6; fill: none; marker-end: url(#arrow-y); }
+            .port { font: 700 10px "Source Code Pro", monospace; fill: #1d4ed8; }
           </style>
         </defs>
 
+
         <!-- Browser -->
-        <rect x="20" y="170" width="150" height="84" rx="8" fill="#fff" stroke="#dddddd" stroke-width="1.5"/>
+        <rect x="20" y="170" width="150" height="84" rx="8" fill="#fff" stroke="#cbd5e1" stroke-width="1.5"/>
         <rect x="20" y="170" width="150" height="4" rx="2" fill="#ffc91a"/>
         <text class="lbl" x="95" y="205" text-anchor="middle">Browser</text>
         <text class="sub" x="95" y="224" text-anchor="middle">chat UI · ingest UI</text>
 
         <!-- Agent -->
-        <rect x="245" y="155" width="180" height="114" rx="8" fill="#fff" stroke="#3776ab" stroke-width="2"/>
-        <rect x="245" y="155" width="180" height="4" rx="2" fill="#3776ab"/>
-        <text class="lbl" x="335" y="186" text-anchor="middle">agent — ReAct</text>
+        <rect x="245" y="155" width="180" height="114" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+        <rect x="245" y="155" width="180" height="4" rx="2" fill="#3b82f6"/>
+        <text class="lbl" x="335" y="186" text-anchor="middle">agent</text>
         <text class="port" x="335" y="204" text-anchor="middle">:8082</text>
         <text class="sub" x="335" y="226" text-anchor="middle">toggles gate tools</text>
         <text class="sub" x="335" y="244" text-anchor="middle">memory · summary</text>
 
         <!-- Tool nodes -->
-        <rect x="520" y="40" width="170" height="58" rx="8" fill="#fff" stroke="#dddddd" stroke-width="1.5"/>
+        <rect x="520" y="40" width="170" height="58" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
         <text class="lbl" x="605" y="64" text-anchor="middle">web_search</text>
         <text class="sub" x="605" y="82" text-anchor="middle">Tavily · citations</text>
 
-        <rect x="520" y="128" width="170" height="58" rx="8" fill="#fff" stroke="#dddddd" stroke-width="1.5"/>
+        <rect x="520" y="128" width="170" height="58" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
         <text class="lbl" x="605" y="152" text-anchor="middle">search_pdf</text>
         <text class="sub" x="605" y="170" text-anchor="middle">retrieval :8081 (SSE)</text>
 
-        <rect x="520" y="216" width="170" height="58" rx="8" fill="#fff" stroke="#dddddd" stroke-width="1.5"/>
+        <rect x="520" y="216" width="170" height="58" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
         <text class="lbl" x="605" y="240" text-anchor="middle">mcp (umbrella)</text>
         <text class="sub" x="605" y="258" text-anchor="middle">mcp_server :8083 (SSE)</text>
 
-        <rect x="520" y="304" width="170" height="58" rx="8" fill="#fff" stroke="#dddddd" stroke-width="1.5"/>
+        <rect x="520" y="304" width="170" height="58" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
         <text class="lbl" x="605" y="328" text-anchor="middle">recall_history</text>
         <text class="sub" x="605" y="346" text-anchor="middle">read-only · scoped</text>
 
-        <!-- Backends -->
-        <rect x="760" y="40" width="140" height="46" rx="8" fill="#1e2a35"/>
-        <text class="lbl" x="830" y="68" text-anchor="middle" fill="#ffc91a">Web</text>
-        <rect x="760" y="128" width="140" height="46" rx="8" fill="#1e2a35"/>
-        <text class="lbl" x="830" y="156" text-anchor="middle" fill="#ffc91a">Pinecone</text>
-        <rect x="760" y="216" width="140" height="46" rx="8" fill="#1e2a35"/>
-        <text class="lbl" x="830" y="244" text-anchor="middle" fill="#ffc91a">MongoDB</text>
-        <rect x="760" y="304" width="140" height="46" rx="8" fill="#1e2a35"/>
-        <text class="lbl" x="830" y="332" text-anchor="middle" fill="#ffc91a">Mongo (memory)</text>
+        <!-- Backends — color-coded by service type -->
+        <rect x="760" y="40"  width="140" height="58" rx="8" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5"/>
+        <text class="lbl" x="830" y="64"  text-anchor="middle">Web</text>
+        <text class="sub" x="830" y="82"  text-anchor="middle">Tavily · live search</text>
+
+        <rect x="760" y="128" width="140" height="58" rx="8" fill="#f3e8ff" stroke="#9333ea" stroke-width="1.5"/>
+        <text class="lbl" x="830" y="152" text-anchor="middle">Pinecone</text>
+        <text class="sub" x="830" y="170" text-anchor="middle">vector search</text>
+
+        <rect x="760" y="216" width="140" height="58" rx="8" fill="#fef08a" stroke="#ca8a04" stroke-width="1.5"/>
+        <text class="lbl" x="830" y="240" text-anchor="middle">MongoDB</text>
+        <text class="sub" x="830" y="258" text-anchor="middle">books · convos</text>
+
+        <rect x="760" y="304" width="140" height="58" rx="8" fill="#fef9c3" stroke="#ca8a04" stroke-width="1.5"/>
+        <text class="lbl" x="830" y="328" text-anchor="middle">Mongo (memory)</text>
+        <text class="sub" x="830" y="346" text-anchor="middle">recall_history store</text>
 
         <!-- Edges -->
         <path class="edge" d="M170 212 L243 212"/>
@@ -215,10 +226,10 @@
         <path class="edge" d="M425 205 C470 180, 480 165, 518 157"/>
         <path class="edge" d="M425 222 C470 240, 480 245, 518 245"/>
         <path class="edge" d="M425 240 C470 300, 480 330, 518 333"/>
-        <path class="edge" d="M690 65 L758 64"/>
-        <path class="edge" d="M690 155 L758 152"/>
-        <path class="edge" d="M690 245 L758 240"/>
-        <path class="edge edgey" d="M690 333 C720 333, 730 333, 758 330"/>
+        <path class="edge" d="M690 65  L758 69"/>
+        <path class="edge" d="M690 155 L758 157"/>
+        <path class="edge" d="M690 245 L758 245"/>
+        <path class="edgey" d="M690 333 C720 333, 730 333, 758 333"/>
       </svg>
     </div>
     <p class="lead" style="margin-top:16px; font-size:.95rem;">The agent exposes only the tools its toggles allow: <code>recall_history</code> is always on; <strong>My Library</strong> adds <code>search_pdf</code> + <code>mcp</code>; <strong>Web</strong> adds <code>web_search</code>. Backend is Ollama by default, Claude when a key, model, and credit flag are all set.</p>
