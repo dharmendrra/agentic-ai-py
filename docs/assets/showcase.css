@@ -74,6 +74,14 @@ header.topbar {
 .hero { background: var(--header-grad); color: #fff; padding: 76px 0 64px; }
 .hero h1 { font-size: clamp(2.1rem, 5.5vw, 3.2rem); font-weight: 700; margin-bottom: .15em; }
 .hero .tagline { font-size: 1.2rem; opacity: .95; max-width: 680px; margin: 6px 0 0; }
+.hero-wrap { display: flex; align-items: center; gap: 44px; }
+.hero-wrap .hero-text { flex: 1 1 56%; min-width: 0; }
+.hero-wrap .hero-video { flex: 1 1 44%; aspect-ratio: 16 / 9; border-radius: 10px; overflow: hidden; box-shadow: 0 10px 34px rgba(0,0,0,.38); }
+.hero-wrap .hero-video iframe { display: block; width: 100%; height: 100%; border: 0; }
+@media (max-width: 860px) {
+  .hero-wrap { flex-direction: column; align-items: stretch; }
+  .hero-wrap .hero-video { width: 100%; }
+}
 .hero-badges { display: flex; flex-wrap: wrap; gap: 9px; margin: 26px 0 28px; }
 .pill { background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.25); padding: 5px 13px; border-radius: 999px; font-size: .82rem; color: #fff; }
 .pill strong { color: var(--py-yellow); }
