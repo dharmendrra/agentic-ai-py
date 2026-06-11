@@ -21,6 +21,33 @@ UIs: agent chat at <http://localhost:8082>, retrieval upload at
 
 ## Setup
 
+### One-shot (macOS / Homebrew)
+
+```bash
+chmod +x setup.sh      # first time only
+./setup.sh             # idempotent — safe to re-run
+./run.sh               # launch all three services
+```
+
+`setup.sh` installs/verifies Python 3.12+, MongoDB, and Ollama; creates `.venv`
+and runs `pip install -e ".[dev]"`; pulls the embedding model
+(`nomic-embed-text`) and a chat model (`gemma2:2b`); copies
+`config.example.json` → `config.json` if missing; and writes a `run.sh`
+launcher. It is idempotent and degrades gracefully when a dependency is absent.
+
+API keys (Tavily / Pinecone / Anthropic) can't be auto-provisioned. `setup.sh`
+reads them from the environment if set, otherwise writes placeholders into
+`config.json` and prints exactly which keys to fill in. Without keys, plain
+Ollama chat still works; Web and My Library features are limited.
+
+A showcase site lives in `docs/` (GitHub Pages). Preview locally with:
+
+```bash
+python3 -m http.server -d docs 8000   # then open http://localhost:8000
+```
+
+### Manual
+
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"

@@ -122,13 +122,15 @@ class ReActRunner:
 
             act = parse_action(response)
 
-            # Plain-LLM mode: with no retrieval tools enabled there is nothing to
-            # iterate on, so a direct response (no Action) IS the answer — accept it
-            # instead of looping to MAX_STEPS. Weak local models often answer
-            # without the "Final Answer:" prefix. See plan §6.5 (no-tools branch).
-            if act is None and not use_web and not use_library:
-                log.info("[AGENT] no tools active and no Action - treating response as final answer")
-                return response.strip(), False, _ordered_sources(used_sources), citations
+            # No tool call this step → the model has produced its answer (weak
+            # models often skip the "Final Answer:" prefix, or ramble after
+            # gathering tool results). Accept it instead of looping to MAX_STEPS.
+            if act is None:
+                log.info("[AGENT] no Action in response - treating it as the final answer")
+                ans = response.strip()
+                if ans.startswith("Thought:") and "\n" in ans:
+                    ans = ans.split("\n", 1)[1].strip()
+                return ans, False, _ordered_sources(used_sources), citations
 
             if act is not None:
                 action, action_input = act

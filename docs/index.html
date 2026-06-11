@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Agentic AI (Python) — Your Library Knowledge Base</title>
+<meta name="description" content="A Python ReAct assistant over your PDF library, the web, and MongoDB. Three FastAPI services, source toggles (Web / My Library), conversation memory, honest provenance, and a python.org-styled UI. Runs local on Ollama, switches to Claude." />
+
+<meta property="og:title" content="Agentic AI (Python) — Your Library Knowledge Base" />
+<meta property="og:description" content="ReAct agent + PDF ingestion/retrieval + MongoDB MCP, all in Python. Web / My Library source toggles, memory, clarify-back, honest provenance. Local on Ollama, optional Claude." />
+<meta property="og:type" content="website" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/showcase.css" />
+</head>
+<body>
+
+<!-- ── Top bar ── -->
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <span class="brand">
+      <svg class="logo" viewBox="0 0 110 110" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path fill="#ffd43b" d="M54 5c-13 0-12 6-12 6v8h24v3H30s-16-2-16 24 14 24 14 24h8v-9s0-14 14-14h24s13 0 13-13V19S88 5 54 5zM40 12a4 4 0 110 8 4 4 0 010-8z"/>
+        <path fill="#3776ab" d="M56 105c13 0 12-6 12-6v-8H44v-3h36s16 2 16-24-14-24-14-24h-8v9s0 14-14 14H36s-13 0-13 13v22s-2 7 36 7zM70 98a4 4 0 110-8 4 4 0 010 8z"/>
+      </svg>
+      Agentic AI <span class="suffix">(Python)</span>
+    </span>
+    <nav class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#how">How it works</a>
+      <a href="#in-action">In action</a>
+      <a href="#setup">Setup</a>
+      <a class="nav-cta" href="https://github.com/dharmendrra/agentic-ai-py">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ── Hero ── -->
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow" style="color:var(--py-yellow)">Python full rebuild · ReAct · FastAPI</div>
+    <h1>Your <span class="accent">Library</span> Knowledge Base</h1>
+    <p class="tagline">A conversational AI assistant that answers from <strong>your own PDFs</strong>, the <strong>live web</strong>, or its <strong>own knowledge</strong> — you decide, with two toggles. Built in Python as three FastAPI services, styled after python.org, and honest about where every answer came from.</p>
+    <div class="hero-badges">
+      <span class="pill"><strong>3</strong> FastAPI services</span>
+      <span class="pill"><strong>ReAct</strong> agent loop</span>
+      <span class="pill"><strong>Pinecone</strong> + Ollama embeddings</span>
+      <span class="pill"><strong>MongoDB</strong> memory + MCP</span>
+      <span class="pill"><strong>Tavily</strong> web search</span>
+      <span class="pill"><strong>72</strong> pytest tests</span>
+      <span class="pill">Ollama → <strong>Claude</strong> backend</span>
+    </div>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#setup">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 17 12 21 16 17"/><line x1="12" x2="12" y1="12" y2="21"/><path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29"/></svg>
+        One-shot setup
+      </a>
+      <a class="btn btn-ghost" href="#architecture">See the architecture</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Stats ── -->
+<section class="section-soft">
+  <div class="wrap stats">
+    <div class="stat"><div class="num">3</div><div class="label">Python services</div></div>
+    <div class="stat"><div class="num">2</div><div class="label">source toggles</div></div>
+    <div class="stat"><div class="num">5</div><div class="label">agent tools</div></div>
+    <div class="stat"><div class="num">72</div><div class="label">passing tests</div></div>
+  </div>
+</section>
+
+<!-- ── Features ── -->
+<section id="features">
+  <div class="wrap">
+    <div class="eyebrow">What it does</div>
+    <h2>Pick your source. <span class="accent">Trust the answer.</span></h2>
+    <p class="lead">Every answer carries an honest provenance label, so you always know whether it came from your library, the web, the database, or the model itself.</p>
+
+    <div class="grid grid-3">
+      <div class="card">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>Web toggle</h3>
+        <p>Flip on <strong>🌐 Web</strong> and the agent may call <strong>Tavily</strong>. Source URLs are captured, rendered as clickable citations, and persisted with the conversation.</p>
+      </div>
+      <div class="card">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 0 3-3h7z"/></svg>My Library toggle</h3>
+        <p>Flip on <strong>📚 My Library</strong> for your ingested PDFs (Pinecone vector search) <em>and</em> the MongoDB MCP CRUD tools. Both toggles off = the model's own knowledge.</p>
+      </div>
+      <div class="card">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Conversation memory</h3>
+        <p>History lives in MongoDB via <code>motor</code>. A past-conversations sidebar reopens any chat, and a read-only <code>recall_history</code> tool gives the model exact deep recall.</p>
+      </div>
+      <div class="card">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>Drag-and-drop ingestion</h3>
+        <p>The retrieval service has a modern upload page: extract → chunk → embed (Ollama) → upsert to Pinecone, plus a Mongo <code>books</code> catalog for per-book narrowing.</p>
+      </div>
+      <div class="card">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>Clarify-back</h3>
+        <p>When a topic can't be pinned to a specific book, the agent asks <em>"do you mean <strong>Game of Thrones</strong> or…?"</em> instead of guessing — backed by the catalog.</p>
+      </div>
+      <div class="card">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>Tiered context <span class="badge">token-budgeted</span></h3>
+        <p>Recent turns verbatim, older folded into a rolling summary, raw tool observations never replayed — so prompts stay cheap even on local Ollama.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Architecture ── -->
+<section id="architecture" class="section-soft">
+  <div class="wrap">
+    <div class="eyebrow">Architecture</div>
+    <h2>Three Python services, <span class="accent">one assistant</span></h2>
+    <p class="lead">A clean separation: the agent reasons, the retrieval service owns PDFs and vectors, and the MCP server exposes MongoDB as model tools over SSE.</p>
+
+    <div class="svc-grid">
+      <div class="svc">
+        <span class="port">:8082</span>
+        <h3>agent/</h3>
+        <p>The conversational ReAct agent and chat UI.</p>
+        <ul>
+          <li>FastAPI + static chat UI</li>
+          <li>ReAct loop, tool gating by toggle</li>
+          <li>Conversation store (motor)</li>
+          <li>LLM backend: Ollama or Claude</li>
+        </ul>
+      </div>
+      <div class="svc">
+        <span class="port">:8081</span>
+        <h3>retrieval/</h3>
+        <p>PDF ingestion + vector search.</p>
+        <ul>
+          <li>Drag-drop upload UI</li>
+          <li>extract → chunk → embed → upsert</li>
+          <li>Pinecone store + <code>books</code> catalog</li>
+          <li><code>POST /api/search</code> streams SSE</li>
+        </ul>
+      </div>
+      <div class="svc">
+        <span class="port">:8083</span>
+        <h3>mcp_server/</h3>
+        <p>MongoDB as MCP tools over SSE.</p>
+        <ul>
+          <li>Official Python <code>mcp</code> SDK</li>
+          <li>list / query / insert / update / delete</li>
+          <li>Discovered at runtime by the agent</li>
+          <li>Plain CRUD — no vectors here</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Inline SVG dataflow diagram -->
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 920 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Agentic AI Python dataflow: browser to agent, agent to tools, tools to backends.">
+        <defs>
+          <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+            <path d="M0 0L9 4.5L0 9z" fill="#3776ab"/>
+          </marker>
+          <style>
+            .lbl { font: 600 13px "Source Sans 3", sans-serif; fill: #1e2a35; }
+            .sub { font: 400 11px "Source Code Pro", monospace; fill: #666; }
+            .edge { stroke: #3776ab; stroke-width: 1.6; fill: none; marker-end: url(#arrow); }
+            .edgey { stroke: #d9a400; }
+            .port { font: 700 10px "Source Code Pro", monospace; fill: #2d618c; }
+          </style>
+        </defs>
+
+        <!-- Browser -->
+        <rect x="20" y="170" width="150" height="84" rx="8" fill="#fff" stroke="#dddddd" stroke-width="1.5"/>
+        <rect x="20" y="170" width="150" height="4" rx="2" fill="#ffc91a"/>
+        <text class="lbl" x="95" y="205" text-anchor="middle">Browser</text>
+        <text class="sub" x="95" y="224" text-anchor="middle">chat UI · ingest UI</text>
+
+        <!-- Agent -->
+        <rect x="245" y="155" width="180" height="114" rx="8" fill="#fff" stroke="#3776ab" stroke-width="2"/>
+        <rect x="245" y="155" width="180" height="4" rx="2" fill="#3776ab"/>
+        <text class="lbl" x="335" y="186" text-anchor="middle">agent — ReAct</text>
+        <text class="port" x="335" y="204" text-anchor="middle">:8082</text>
+        <text class="sub" x="335" y="226" text-anchor="middle">toggles gate tools</text>
+        <text class="sub" x="335" y="244" text-anchor="middle">memory · summary</text>
+
+        <!-- Tool nodes -->
+        <rect x="520" y="40" width="170" height="58" rx="8" fill="#fff" stroke="#dddddd" stroke-width="1.5"/>
+        <text class="lbl" x="605" y="64" text-anchor="middle">web_search</text>
+        <text class="sub" x="605" y="82" text-anchor="middle">Tavily · citations</text>
+
+        <rect x="520" y="128" width="170" height="58" rx="8" fill="#fff" stroke="#dddddd" stroke-width="1.5"/>
+        <text class="lbl" x="605" y="152" text-anchor="middle">search_pdf</text>
+        <text class="sub" x="605" y="170" text-anchor="middle">retrieval :8081 (SSE)</text>
+
+        <rect x="520" y="216" width="170" height="58" rx="8" fill="#fff" stroke="#dddddd" stroke-width="1.5"/>
+        <text class="lbl" x="605" y="240" text-anchor="middle">mcp (umbrella)</text>
+        <text class="sub" x="605" y="258" text-anchor="middle">mcp_server :8083 (SSE)</text>
+
+        <rect x="520" y="304" width="170" height="58" rx="8" fill="#fff" stroke="#dddddd" stroke-width="1.5"/>
+        <text class="lbl" x="605" y="328" text-anchor="middle">recall_history</text>
+        <text class="sub" x="605" y="346" text-anchor="middle">read-only · scoped</text>
+
+        <!-- Backends -->
+        <rect x="760" y="40" width="140" height="46" rx="8" fill="#1e2a35"/>
+        <text class="lbl" x="830" y="68" text-anchor="middle" fill="#ffc91a">Web</text>
+        <rect x="760" y="128" width="140" height="46" rx="8" fill="#1e2a35"/>
+        <text class="lbl" x="830" y="156" text-anchor="middle" fill="#ffc91a">Pinecone</text>
+        <rect x="760" y="216" width="140" height="46" rx="8" fill="#1e2a35"/>
+        <text class="lbl" x="830" y="244" text-anchor="middle" fill="#ffc91a">MongoDB</text>
+        <rect x="760" y="304" width="140" height="46" rx="8" fill="#1e2a35"/>
+        <text class="lbl" x="830" y="332" text-anchor="middle" fill="#ffc91a">Mongo (memory)</text>
+
+        <!-- Edges -->
+        <path class="edge" d="M170 212 L243 212"/>
+        <path class="edge" d="M425 196 C470 150, 480 90, 518 75"/>
+        <path class="edge" d="M425 205 C470 180, 480 165, 518 157"/>
+        <path class="edge" d="M425 222 C470 240, 480 245, 518 245"/>
+        <path class="edge" d="M425 240 C470 300, 480 330, 518 333"/>
+        <path class="edge" d="M690 65 L758 64"/>
+        <path class="edge" d="M690 155 L758 152"/>
+        <path class="edge" d="M690 245 L758 240"/>
+        <path class="edge edgey" d="M690 333 C720 333, 730 333, 758 330"/>
+      </svg>
+    </div>
+    <p class="lead" style="margin-top:16px; font-size:.95rem;">The agent exposes only the tools its toggles allow: <code>recall_history</code> is always on; <strong>My Library</strong> adds <code>search_pdf</code> + <code>mcp</code>; <strong>Web</strong> adds <code>web_search</code>. Backend is Ollama by default, Claude when a key, model, and credit flag are all set.</p>
+  </div>
+</section>
+
+<!-- ── How it works ── -->
+<section id="how">
+  <div class="wrap">
+    <div class="eyebrow">How it works</div>
+    <h2>One turn, <span class="accent">end to end</span></h2>
+    <div class="flow">
+      <div class="step">
+        <h4>Ask</h4>
+        <p>You type a question and choose Web, My Library, both, or neither.</p>
+      </div>
+      <div class="step">
+        <h4>Assemble</h4>
+        <p>The agent builds a budgeted prompt: branched system + rolling summary + last K turns.</p>
+      </div>
+      <div class="step">
+        <h4>Reason &amp; act</h4>
+        <p>A ReAct loop calls only the allowed tools — vector search, web, MCP, recall.</p>
+      </div>
+      <div class="step">
+        <h4>Answer</h4>
+        <p>Final text is persisted with provenance + citations; raw observations are dropped.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── In action ── -->
+<section id="in-action" class="section-soft">
+  <div class="wrap">
+    <div class="eyebrow">In action</div>
+    <h2>A step-by-step <span class="accent">walkthrough</span></h2>
+    <p class="lead">The real UIs, in python.org light theme. (Screenshots are generated by <code>docs/capture_screenshots.py</code> against the running apps.)</p>
+
+    <div class="shots">
+      <div class="shot">
+        <div class="copy">
+          <div class="num">01</div>
+          <h3>The chat hero</h3>
+          <p>Open the agent at <code>:8082</code>. A blue gradient hero over a clean chat column, with the past-conversations sidebar on the right — all in the python.org palette.</p>
+        </div>
+        <figure>
+          <img data-shot="chat-hero" alt="Agent chat landing page with hero band and sidebar" />
+          <figcaption>agent/app/static — chat landing</figcaption>
+        </figure>
+      </div>
+
+      <div class="shot rev">
+        <div class="copy">
+          <div class="num">02</div>
+          <h3>Source toggles</h3>
+          <p>Two pills — <strong>🌐 Web</strong> and <strong>📚 My Library</strong>. Active = filled blue, inactive = blue outline. They gate which tools the agent may use this turn.</p>
+        </div>
+        <figure>
+          <img data-shot="source-toggles" alt="Web and My Library toggles, both active" />
+          <figcaption>Both toggles active</figcaption>
+        </figure>
+      </div>
+
+      <div class="shot">
+        <div class="copy">
+          <div class="num">03</div>
+          <h3>Answer with provenance + clickable web sources</h3>
+          <p>Every answer carries an honest source chip — <em>from Web</em>, <em>from My Library</em>, <em>from Database</em>, or <em>model's own knowledge</em> — and web answers list clickable Tavily citations.</p>
+        </div>
+        <figure>
+          <img data-shot="answer-web-citations" alt="Assistant answer with provenance chip and clickable web citations" />
+          <figcaption>Provenance + Tavily citations</figcaption>
+        </figure>
+      </div>
+
+      <div class="shot rev">
+        <div class="copy">
+          <div class="num">04</div>
+          <h3>Drag-and-drop ingestion</h3>
+          <p>The retrieval service at <code>:8081</code> has a modern drop zone. Drop a PDF, give it a title, and the pipeline extracts, chunks, embeds, and upserts to Pinecone + the catalog.</p>
+        </div>
+        <figure>
+          <img data-shot="ingest-dropzone" alt="PDF drag-and-drop ingestion page" />
+          <figcaption>retrieval/app/static — upload</figcaption>
+        </figure>
+        <figure>
+          <img data-shot="ingest-result" alt="Ingestion status console reporting pages, chunks, and vectors upserted" />
+          <figcaption>Real ingestion — pages, chunks, and vectors upserted</figcaption>
+        </figure>
+      </div>
+
+      <div class="shot">
+        <div class="copy">
+          <div class="num">05</div>
+          <h3>The search-test panel</h3>
+          <p>A built-in panel hits Pinecone directly (the raw vectors the agent uses), so you can confirm a freshly-ingested PDF is findable without going through the LLM.</p>
+        </div>
+        <figure>
+          <img data-shot="ingest-search-test" alt="Vector search test panel with dark console output" />
+          <figcaption>Direct vector search test</figcaption>
+        </figure>
+      </div>
+
+      <div class="shot rev">
+        <div class="copy">
+          <div class="num">06</div>
+          <h3>Past-conversations sidebar</h3>
+          <p>Every conversation is saved. Click any item to reopen it; the agent reloads the thread and keeps reasoning with full token-budgeted memory.</p>
+        </div>
+        <figure>
+          <img data-shot="sidebar-conversations" alt="Past conversations sidebar with saved chats" />
+          <figcaption>Reopen any prior chat</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Setup ── -->
+<section id="setup">
+  <div class="wrap">
+    <div class="eyebrow">Setup</div>
+    <h2>One command to <span class="accent">get running</span></h2>
+    <p class="lead">macOS one-shot setup: installs/verifies Python 3.12+, MongoDB, and Ollama; creates the venv; pulls models; and prepares <code>config.json</code>. Idempotent — safe to re-run.</p>
+
+    <div class="code">
+<span class="cmt"># from the repo root</span>
+<span class="prompt">$</span> ./setup.sh
+
+<span class="cmt"># then launch all three services</span>
+<span class="prompt">$</span> ./run.sh
+</div>
+
+    <div class="callout">
+      <strong>API keys can't be auto-provisioned.</strong> <code>setup.sh</code> reads
+      <code>TAVILY_API_KEY</code>, <code>PINECONE_API_KEY</code>, and the Anthropic vars
+      from your environment if set; otherwise it writes placeholders into
+      <code>config.json</code> (gitignored) and prints exactly which keys to fill in.
+      Ollama-only and library/web features degrade gracefully without them.
+    </div>
+
+    <h3 style="margin-top:30px; color:var(--py-blue-nav)">What it automates</h3>
+    <div class="grid grid-2">
+      <div class="card">
+        <h3>Toolchain</h3>
+        <p>Verifies Homebrew, installs Python 3.12+, creates <code>.venv</code>, and runs <code>pip install -e ".[dev]"</code>.</p>
+      </div>
+      <div class="card">
+        <h3>Services &amp; models</h3>
+        <p>Installs &amp; starts MongoDB and Ollama, pulls <code>nomic-embed-text</code> (embeddings) and a chat model (e.g. <code>gemma2:2b</code>).</p>
+      </div>
+      <div class="card">
+        <h3>Config</h3>
+        <p>Copies <code>config.example.json</code> → <code>config.json</code> if missing, injecting any keys found in the environment.</p>
+      </div>
+      <div class="card">
+        <h3>Launcher</h3>
+        <p>Writes <code>run.sh</code> to start all three uvicorn services (agent, retrieval, mcp_server) together.</p>
+      </div>
+    </div>
+
+    <h3 style="margin-top:34px; color:var(--py-blue-nav)">Run services manually</h3>
+    <div class="code">
+<span class="prompt">$</span> source .venv/bin/activate
+<span class="prompt">$</span> uvicorn retrieval.app.main:app  --port 8081   <span class="cmt"># PDF ingest + search</span>
+<span class="prompt">$</span> uvicorn agent.app.main:app      --port 8082   <span class="cmt"># chat UI</span>
+<span class="prompt">$</span> uvicorn mcp_server.app.server:app --port 8083  <span class="cmt"># Mongo MCP (SSE)</span>
+</div>
+  </div>
+</section>
+
+<!-- ── Docs ── -->
+<section class="section-soft">
+  <div class="wrap">
+    <div class="eyebrow">Reference</div>
+    <h2>Technical docs</h2>
+    <div class="doclinks">
+      <a href="DATAFLOW.md">DATAFLOW<span>end-to-end + tool gating</span></a>
+      <a href="API.md">API<span>agent + retrieval endpoints</span></a>
+      <a href="PDF_ENDPOINT_SSE_FORMAT.md">PDF SSE<span>search stream format</span></a>
+      <a href="INGESTION_FORMAT.md">Ingestion<span>pipeline + metadata</span></a>
+      <a href="CONVERSATION_STORAGE_FORMAT.md">Conversations<span>Mongo storage</span></a>
+      <a href="RECALL_HISTORY_TOOL.md">recall_history<span>deep-recall tool</span></a>
+      <a href="MCP_SERVER.md">MCP server<span>tool schemas</span></a>
+      <a href="MCP_CLIENT.md">MCP client<span>agent-side SSE</span></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>Agentic AI <strong>(Python)</strong> — Your Library Knowledge Base. python.org-styled. Local on Ollama, optional Claude.</span>
+    <a href="https://github.com/dharmendrra/agentic-ai-py">View on GitHub →</a>
+  </div>
+</footer>
+
+<script>
+  // Resolve each screenshot; if the file is missing, show a styled placeholder
+  // so the page stays polished before capture_screenshots.py has been run.
+  document.querySelectorAll('img[data-shot]').forEach((img) => {
+    const name = img.getAttribute('data-shot');
+    const src = 'screenshots/' + name + '.png';
+    const probe = new Image();
+    probe.onload = () => { img.src = src; };
+    probe.onerror = () => {
+      img.classList.add('ph');
+      img.removeAttribute('src');
+      img.alt = 'Screenshot pending: ' + name + '.png';
+      const fig = img.closest('figure');
+      img.outerHTML = '<div class="ph" style="min-height:220px;border:1px dashed #3776ab;'
+        + 'border-radius:8px;display:grid;place-items:center;color:#3776ab;'
+        + 'background:#f5f9fc;font-weight:600;text-align:center;padding:20px;">'
+        + 'Screenshot pending<br><span style="font-weight:400;font-size:.8rem;color:#666">'
+        + 'screenshots/' + name + '.png</span></div>';
+    };
+    probe.src = src;
+  });
+</script>
+</body>
+</html>
