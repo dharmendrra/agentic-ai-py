@@ -93,9 +93,13 @@ async def agent_query(req: AgentRequest) -> AgentResponse:
     await store.append_message(conv_id, "user", req.query)
 
     # Run the ReAct loop.
-    answer, needs_clarification, sources, citations = await runner.run(
-        conv_id, req.query, req.use_web, req.use_library
-    )
+    try:
+        answer, needs_clarification, sources, citations = await runner.run(
+            conv_id, req.query, req.use_web, req.use_library
+        )
+    except Exception as exc:  # noqa: BLE001
+        log.exception("[AGENT] runner.run failed: %s", exc)
+        raise HTTPException(status_code=500, detail=str(exc))
 
     # Persist the assistant message (with the sources + citations used this turn).
     await store.append_message(conv_id, "assistant", answer, sources, citations)

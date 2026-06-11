@@ -28,6 +28,7 @@ class Settings(BaseModel):
     MAX_STEPS: int = 6
     MAX_RETRIES: int = 3
     MAX_TOKENS: int = 1024
+    OLLAMA_TIMEOUT: float = 300.0
 
     # Embeddings + Pinecone
     EMBEDDING_MODEL: str = "nomic-embed-text"

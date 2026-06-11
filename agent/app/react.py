@@ -122,10 +122,18 @@ class ReActRunner:
 
             act = parse_action(response)
 
-            # No tool call this step → the model has produced its answer (weak
-            # models often skip the "Final Answer:" prefix, or ramble after
-            # gathering tool results). Accept it instead of looping to MAX_STEPS.
+            # No tool call this step → treat as final answer ONLY if at least one
+            # tool has already run. If the model skips tools on step 1 while sources
+            # are enabled, nudge it to use them — otherwise it answers from its own
+            # knowledge even though the user toggled Web or My Library on.
             if act is None:
+                if not used_sources and (use_web or use_library):
+                    log.info("[AGENT] no Action on step %d but tools available — nudging", step)
+                    messages.append(
+                        "Observation: You have not used any tools yet. "
+                        "You MUST call the appropriate tool before answering."
+                    )
+                    continue
                 log.info("[AGENT] no Action in response - treating it as the final answer")
                 ans = response.strip()
                 if ans.startswith("Thought:") and "\n" in ans:

@@ -20,6 +20,7 @@ def select_llm(settings: Settings) -> LLM:
         host=settings.OLLAMA_HOST,
         model=settings.OLLAMA_MODEL,
         max_tokens=settings.MAX_TOKENS,
+        timeout=settings.OLLAMA_TIMEOUT,
     )
 
 
